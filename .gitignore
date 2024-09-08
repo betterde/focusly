@@ -2,4 +2,6 @@
 .idea
 .DS_Store
 .focusly.yaml
+spa/src/gen/*
 docs/api/*
+internal/gen/*

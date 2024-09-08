@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package svc.v1;
+
+import "google/api/annotations.proto";
+
+message CreateProjectRequest {
+  string name = 1;
+}
+
+message CreateProjectResponse {
+  string id = 1;
+  string name = 2;
+}
+
+service ProjectService {
+  rpc CreateProject(CreateProjectRequest) returns (CreateProjectResponse) {
+    option (google.api.http) = {
+      post: "/v1/project",
+      body: "*",
+    };
+  }
+}

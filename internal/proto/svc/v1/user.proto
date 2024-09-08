@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package svc.v1;
+
+import "google/api/annotations.proto";
+
+message User {
+  string id = 1;
+  string name = 2;
+  string role = 3;
+  string email = 4;
+  string avatar = 5;
+}
+
+message SignInWithSSOProviderRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message SignInWithSSOProviderResponse {
+  string payload = 1;
+}
+
+message EchoRequest {
+  string payload = 1;
+}
+
+message EchoResponse {
+  string payload = 1;
+}
+
+service UserService {
+  rpc SignInWithSSOProvider(SignInWithSSOProviderRequest) returns (SignInWithSSOProviderResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/sign-in",
+      body: "*"
+    };
+  };
+
+  rpc Echo(EchoRequest) returns (EchoResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/echo",
+      body: "*"
+    };
+  };
+}
