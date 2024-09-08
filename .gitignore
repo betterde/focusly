@@ -1,0 +1,5 @@
+.env
+.idea
+.DS_Store
+.focusly.yaml
+docs/api/*

@@ -1,0 +1,8 @@
+env: production
+
+http:
+  listen: 0.0.0.0:8443
+#  tlsKey: /certs/focusly.tld.key
+#  tlsCert: /certs/focusly.tld.crt
+logging:
+  level: ERROR
