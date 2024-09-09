@@ -11,9 +11,10 @@ var Conf *Config
 
 type Config struct {
 	// Add config item to here
-	Env     string  `yaml:"env"`
-	HTTP    HTTP    `yaml:"http"`
-	Logging Logging `yaml:"logging"`
+	Env      string   `yaml:"env"`
+	HTTP     HTTP     `yaml:"http"`
+	Logging  Logging  `yaml:"logging"`
+	Database Database `yaml:"database"`
 }
 
 type HTTP struct {
@@ -24,6 +25,14 @@ type HTTP struct {
 
 type Logging struct {
 	Level string `yaml:"level"`
+}
+
+type Database struct {
+	URL       string `yaml:"url"`
+	Database  string `yaml:"database"`
+	Username  string `yaml:"username"`
+	Password  string `yaml:"password"`
+	Namespace string `yaml:"namespace"`
 }
 
 func Parse(file string, envPrefix string) {
