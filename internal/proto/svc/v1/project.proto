@@ -3,21 +3,35 @@ syntax = "proto3";
 package svc.v1;
 
 import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+message Project {}
 
 message CreateProjectRequest {
   string name = 1;
+  string icon = 2;
+  string desc = 3;
+  string owner = 4;
+  string status = 5;
 }
 
 message CreateProjectResponse {
   string id = 1;
   string name = 2;
+  string icon = 3;
+  string desc = 4;
+  string owner = 5;
+  string status = 6 [deprecated = true];
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+  google.protobuf.Timestamp deleted_at = 9;
 }
 
 service ProjectService {
   rpc CreateProject(CreateProjectRequest) returns (CreateProjectResponse) {
     option (google.api.http) = {
-      post: "/v1/project",
-      body: "*",
+      post: "/v1/project"
+      body: "*"
     };
   }
 }

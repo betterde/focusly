@@ -32,15 +32,15 @@ message EchoResponse {
 service UserService {
   rpc SignInWithSSOProvider(SignInWithSSOProviderRequest) returns (SignInWithSSOProviderResponse) {
     option (google.api.http) = {
-      post: "/v1/auth/sign-in",
+      post: "/v1/auth/sign-in"
       body: "*"
     };
-  };
+  }
 
   rpc Echo(EchoRequest) returns (EchoResponse) {
     option (google.api.http) = {
-      post: "/v1/auth/echo",
+      post: "/v1/auth/echo"
       body: "*"
     };
-  };
+  }
 }
