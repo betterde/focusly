@@ -37,7 +37,7 @@ func InitLogger() {
 		atomicLevel,
 	))
 
-	Logger = logger.Sugar()
+	Logger = logger.Sugar().Named("focusly")
 }
 
 func SetLevel(lvl string) error {
