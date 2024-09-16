@@ -4,11 +4,18 @@ http:
   listen: 0.0.0.0:8443
 #  tlsKey: /certs/focusly.tld.key
 #  tlsCert: /certs/focusly.tld.crt
+
+grpc:
+  listen: 0.0.0.0:8080
+#  tlsKey: /certs/focusly.tld.key
+#  tlsCert: /certs/focusly.tld.crt
+
+logging:
+  level: DEBUG
+
 database:
-  url: ws://surrealdb:8000/rpc
+  url: wss://surrealdb.database.local/rpc
   database: focusly
-  username: focusly
+  username: surrealdb
   password:
   namespace: betterde
-logging:
-  level: ERROR
