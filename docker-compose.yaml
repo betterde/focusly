@@ -2,16 +2,20 @@ services:
   server:
     image: betterde/focusly:latest
     ports:
-      - 0.0.0.0:443:443
+      - "0.0.0.0:443:443/tcp"
     networks:
-      - traefik
+      - focusly
     hostname: server
     environment:
       - FOCUSLY_ENV=production
       - FOCUSLY_HTTP_LISTEN=0.0.0.0:80
-      - FOCUSLY_HTTP_TLSKEY=/certs/domain.tld.key
-      - FOCUSLY_HTTP_TLSCERT=/certs/domain.tld.crt
       - FOCUSLY_LOGGING_LEVEL=INFO
+      # SurrealDB Configuration
+      - FOCUSLY_DATABASE_URL=wss://surrealdb.database.local/rpc
+      - FOCUSLY_DATABASE_DATABASE=focusly
+      - FOCUSLY_DATABASE_USERNAME=surrealdb
+      - FOCUSLY_DATABASE_PASSWORD=
+      - FOCUSLY_DATABASE_NAMESPACE=betterde
     container_name: server
   surrealdb:
     user: "1000"
@@ -22,19 +26,19 @@ services:
     command: [ "start" ]
     hostname: surrealdb
     networks:
-      - traefik
+      - focusly
     environment:
       - SURREAL_BIND=0.0.0.0:8000
       - SURREAL_USER=surrealdb
-      - SURREAL_PASS=p9moC6XYruscCQfdHMHXfm7HQAaNZ8Am
+      - SURREAL_PASS=
       - SURREAL_PATH=file:///surrealdb-data/surreal.db
       - SURREAL_CAPS_ALLOW_ALL=true
     container_name: surrealdb
 
-  volumes:
-    surrealdb-data:
-      name: surrealdb-data
+volumes:
+  surrealdb-data:
+    name: surrealdb-data
 
 networks:
-  traefik:
-    external: true
+  focusly:
+    name: focusly
