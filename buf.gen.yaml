@@ -2,9 +2,9 @@ version: v2
 
 managed:
   enabled: true
-#  disable:
-#    - file_option: go_package
-#      module: buf.build/googleapis/googleapis
+  disable:
+    - file_option: go_package
+      module: buf.build/googleapis/googleapis
   override:
     - file_option: go_package_prefix
       value: github.com/betterde/focusly/internal/gen
@@ -13,6 +13,7 @@ plugins:
   - remote: buf.build/protocolbuffers/go
     out: internal/gen
     opt: paths=source_relative
+    include_imports: true
   - remote: buf.build/grpc/go
     out: internal/gen
     opt: paths=source_relative
@@ -35,3 +36,6 @@ plugins:
   - remote: buf.build/community/google-gnostic-openapi:v0.7.0
     out: docs/api
     opt: paths=source_relative
+  - remote: buf.build/grpc-ecosystem/openapiv2:v2.22.0
+    out: docs/api
+    opt: logtostderr=true,allow_merge=true,merge_file_name=api
