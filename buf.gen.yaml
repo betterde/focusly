@@ -10,6 +10,9 @@ managed:
       value: github.com/betterde/focusly/internal/gen
 
 plugins:
+  - remote: buf.build/bufbuild/validate-go
+    out: internal/gen
+    opt: paths=source_relative
   - remote: buf.build/protocolbuffers/go
     out: internal/gen
     opt: paths=source_relative
