@@ -35,7 +35,7 @@ func InitLogger() {
 		zapcore.NewJSONEncoder(encoderConfig),
 		zapcore.Lock(os.Stdout),
 		atomicLevel,
-	))
+	), zap.WithCaller(true))
 
 	Logger = logger.Sugar().Named("focusly")
 }
