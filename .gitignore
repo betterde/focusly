@@ -2,6 +2,8 @@
 .idea
 .DS_Store
 .focusly.yaml
+go.work
+go.work.sum
 spa/dist/*
 spa/src/gen/*
 docs/api/*
