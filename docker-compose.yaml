@@ -3,6 +3,7 @@ services:
     image: betterde/focusly:latest
     ports:
       - "0.0.0.0:443:443/tcp"
+    restart: always
     networks:
       - focusly
     hostname: server
@@ -17,10 +18,24 @@ services:
       - FOCUSLY_DATABASE_PASSWORD=
       - FOCUSLY_DATABASE_NAMESPACE=betterde
     container_name: server
+  cerbos:
+    image: ghcr.io/cerbos/cerbos:latest
+    ports:
+      - "0.0.0.0:3592:3592"
+      - "0.0.0.0:3593:3593"
+    restart: always
+    command: ["server", "--config=/config/config.yaml"]
+    volumes:
+      - ./policies:/policies
+      - ./docker/cerbos/config:/config
+    networks:
+      - focusly
+    hostname: cerbos
+    container_name: cerbos
   surrealdb:
     user: "1000"
     image: surrealdb/surrealdb:latest
-    restart: no
+    restart: always
     volumes:
       - surrealdb-data:/surrealdb-data
     command: [ "start" ]
