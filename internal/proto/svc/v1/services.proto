@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package svc.v1;
+
+import "svc/v1/user.proto";
+import "svc/v1/task.proto";
+import "svc/v1/system.proto";
+import "svc/v1/project.proto";
+import "google/api/annotations.proto";
+
+// buf:lint:ignore RPC_NO_DELETE
+service UserService {
+  // Get user detail by ID.
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {
+    option (google.api.http) = {
+      get: "/v1/user/{id}"
+    };
+  }
+
+  // Get project detail by ID.
+  rpc GetProject(GetProjectRequest) returns (GetProjectResponse) {
+    option (google.api.http) = {
+      get: "/v1/projects/{id}"
+    };
+  }
+
+  // Create a project.
+  rpc CreateProject(CreateProjectRequest) returns (CreateProjectResponse) {
+    option (google.api.http) = {
+      post: "/v1/projects"
+      body: "*"
+    };
+  }
+
+  // Update project properties.
+  rpc UpdateProject(UpdateProjectRequest) returns (UpdateProjectResponse) {
+    option (google.api.http) = {
+      patch: "/v1/projects/{id}"
+      body: "*"
+    };
+  }
+
+  // Delete a project.
+  rpc DeleteProject(DeleteProjectRequest) returns (DeleteProjectResponse) {
+    option (google.api.http) = {
+      delete: "/v1/projects/{id}"
+    };
+  }
+
+  // Query the project list based on conditions.
+  rpc ListProjects(ListProjectsRequest) returns (ListProjectsResponse) {
+    option (google.api.http) = {
+      get: "/v1/projects"
+    };
+  }
+
+  // Create a task.
+  rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse) {
+    option (google.api.http) = {
+      post: "/v1/tasks"
+      body: "*"
+    };
+  }
+}
+
+service SystemService {
+  rpc GetVersion(GetVersionRequest) returns (GetVersionResponse) {
+    option (google.api.http) = {
+      get: "/v1/system/version"
+    };
+  }
+}

@@ -1,0 +1,9 @@
+syntax="proto3";
+
+package svc.v1;
+
+message GetVersionRequest {}
+
+message GetVersionResponse {
+  string version = 1;
+}

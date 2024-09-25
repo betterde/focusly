@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+package svc.v1;
+
+message Timestamps {
+  google.protobuf.Timestamp created_at = 1 [
+    json_name = "created_at",
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The creation timestamp of the object."
+    }
+  ];
+
+  google.protobuf.Timestamp updated_at = 2 [
+    json_name = "updated_at",
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The update timestamp of the object."
+    }
+  ];
+
+  google.protobuf.Timestamp deleted_at = 3 [
+    json_name = "deleted_at",
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The deletion timestamp of the object."
+    }
+  ];
+}
+
+message ListQuery {
+  uint64 offset = 1 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"10\"";
+    }
+  ];
+  uint32 limit = 2 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"20\"";
+      description: "Maximum amount of events returned. Default is set to 1000 in documentation.";
+    }
+  ];
+}
+
+message ListSorting {
+  string column = 1 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"name\""
+    }
+  ];
+  Direction direction = 2 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"DIRECTION_ASCENDING\""
+    }
+  ];
+}
+
+message ListMeta {
+  uint32 limit = 1 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"10\""
+    }
+  ];
+  uint32 total = 2 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"2\"";
+    }
+  ];
+  uint32 offset = 3 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"2\"";
+    }
+  ];
+}
+
+enum Direction {
+  DIRECTION_UNSPECIFIED = 0;
+  DIRECTION_ASCENDING = 1;
+  DIRECTION_DESCENDING = 2;
+}
+
+enum TextQueryOperator {
+  TEXT_QUERY_OPERATOR_UNSPECIFIED = 0;
+  TEXT_QUERY_OPERATOR_EQUALS = 1;
+  TEXT_QUERY_OPERATOR_EQUALS_IGNORE_CASE = 2;
+  TEXT_QUERY_OPERATOR_STARTS_WITH = 3;
+  TEXT_QUERY_OPERATOR_STARTS_WITH_IGNORE_CASE = 4;
+  TEXT_QUERY_OPERATOR_CONTAINS = 5;
+  TEXT_QUERY_OPERATOR_CONTAINS_IGNORE_CASE = 6;
+  TEXT_QUERY_OPERATOR_ENDS_WITH = 7;
+  TEXT_QUERY_OPERATOR_ENDS_WITH_IGNORE_CASE = 8;
+}

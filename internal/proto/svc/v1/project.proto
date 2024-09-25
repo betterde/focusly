@@ -2,36 +2,166 @@ syntax = "proto3";
 
 package svc.v1;
 
-import "google/api/annotations.proto";
-import "google/protobuf/timestamp.proto";
+import "svc/v1/general.proto";
+import "buf/validate/validate.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
 
-message Project {}
+enum ProjectStatus {
+  PROJECT_STATUS_UNSPECIFIED = 0;
+  PROJECT_STATUS_ACTIVATED = 1;
+  PROJECT_STATUS_INACTIVATE = 2;
+}
+
+message ProjectProperty {
+  string id = 1 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"84A7DF46-995D-431C-BFCD-00DA3E21B3F1\""
+      description: "The project id."
+    }
+  ];
+
+  string name = 2 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "name"
+      example: "\"Focusly\""
+      description: "The project name."
+    }
+  ];
+
+  string icon = 3 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "icon"
+      example: "\"i-dashboard\""
+      description: "The project icon."
+    }
+  ];
+
+  string desc = 4 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "desc"
+      example: "\"The project description\""
+      description: "The project description."
+    }
+  ];
+
+  string owner = 5 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "owner"
+      example: "\"84A7DF46-995D-431C-BFCD-00DA3E21B3F1\""
+      description: "The project owner user id."
+    }
+  ];
+
+  ProjectStatus status = 6 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "status"
+      example: "\"PROJECT_STATUS_ACTIVATED\""
+      description: "The project status."
+    }
+  ];
+}
+
+message Project {
+  Timestamps timestamps = 1;
+  ProjectProperty properties = 2;
+}
 
 message CreateProjectRequest {
-  string name = 1;
+  string name = 1 [
+    (buf.validate.field).string = {
+      example: "focusly",
+      min_len: 1
+    }
+  ];
   string icon = 2;
   string desc = 3;
-  string owner = 4;
-  string status = 5;
+  string owner = 4 [
+    (buf.validate.field).string = {
+      len: 32,
+      example: "",
+    }
+  ];
+  ProjectStatus status = 5 [
+    (buf.validate.field).enum = {
+      in: [0, 1, 2]
+    }
+  ];
 }
 
 message CreateProjectResponse {
-  string id = 1;
-  string name = 2;
-  string icon = 3;
-  string desc = 4;
-  string owner = 5;
-  string status = 6 [deprecated = true];
-  google.protobuf.Timestamp created_at = 7;
-  google.protobuf.Timestamp updated_at = 8;
-  google.protobuf.Timestamp deleted_at = 9;
+  Project item = 1;
 }
 
-service ProjectService {
-  rpc CreateProject(CreateProjectRequest) returns (CreateProjectResponse) {
-    option (google.api.http) = {
-      post: "/v1/project"
-      body: "*"
-    };
+message UpdateProjectRequest {
+  string id = 1 [
+    (buf.validate.field).string = {
+      len: 32,
+    }
+  ];
+  string name = 2 [
+    (buf.validate.field).string = {
+      min_len: 1
+    }
+  ];
+  string icon = 3;
+  string desc = 4;
+  string owner = 5 [
+    (buf.validate.field).string = {
+      len: 32,
+      example: "",
+    }
+  ];
+  ProjectStatus status = 6;
+}
+
+message UpdateProjectResponse {
+  Project item = 1;
+}
+
+message GetProjectRequest {
+  string id = 1;
+}
+
+message GetProjectResponse {
+  Project item = 1;
+}
+
+message DeleteProjectRequest {
+  string id = 1;
+}
+
+message DeleteProjectResponse {
+  string message = 1;
+}
+
+message ListProjectsRequest {
+  ListQuery query = 1;
+  ListSorting sorting = 2;
+  ListConditions conditions = 3;
+}
+
+message ListProjectsResponse {
+  ListMeta meta = 1;
+  repeated Project items = 2;
+}
+
+message ListConditions {
+  oneof condition {
+    ProjectNameCondition name = 1;
+    ProjectOwnerCondition owner = 2;
+    ProjectStatusCondition status = 3;
   }
+}
+
+message ProjectNameCondition {
+  string value = 1;
+  TextQueryOperator operator = 2;
+}
+
+message ProjectStatusCondition {
+  ProjectStatus value = 1;
+}
+
+message ProjectOwnerCondition {
+  string value = 1;
 }
